@@ -105,3 +105,40 @@ x-amz-trailer:x-amz-checksum-sha256
 content-length;content-type;host;user-agent;x-amz-content-sha256;x-amz-date;x-amz-decoded-content-length;x-amz-sdk-checksum-algorithm;x-amz-trailer
 STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER
 ```
+
+### Raw S3 Http Request/Response (http routed through a local proxy)
+Request (sensitive parts redacted)
+```
+PUT http://test-bucket-unique-unique.s3.eu-west-1.amazonaws.com/S3.Tests.resources.test-file.txt HTTP/1.1
+Expect: 100-continue
+x-amz-sdk-checksum-algorithm: SHA256
+User-Agent: aws-sdk-dotnet-coreclr/3.7.108.0 aws-sdk-dotnet-core/3.7.108.2 .NET_Core/6.0.20 OS/Linux_5.15.0-76-generic_#83-Ubuntu_SMP_Thu_Jun_15_19:16:32_UTC_2023 ClientAsync
+amz-sdk-invocation-id: 31b1eb96-4a42-438e-ad72-057df319792c
+amz-sdk-request: attempt=1; max=5
+Host: test-bucket-unique-unique.s3.eu-west-1.amazonaws.com
+X-Amz-Date: 20230729T143532Z
+X-Amz-Trailer: x-amz-checksum-sha256
+X-Amz-Decoded-Content-Length: 4
+X-Amz-Content-SHA256: STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER
+Authorization: AWS4-HMAC-SHA256 Credential=[redacted]/[redacted]/eu-west-1/s3/aws4_request, SignedHeaders=content-length;content-type;host;user-agent;x-amz-content-sha256;x-amz-date;x-amz-decoded-content-length;x-amz-sdk-checksum-algorithm;x-amz-trailer, Signature=[redacted]
+Content-Length: 334
+Content-Type: text/plain
+
+4;chunk-signature=4d77cb531cd1d5dcec950de4be7323de208bc32143812753f1f1e3caa818cf58
+test
+0;chunk-signature=2c36a072d0e02244a6975917d79355f752949d044aa3918cd39aa27eee0110ab
+x-amz-checksum-sha256:n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg=
+x-amz-trailer-signature:9344d95a10fa5b36103b11211d872e776b35ec96c943d88d62b6b08565771215
+```
+Response:
+```
+HTTP/1.1 200 OK
+x-amz-id-2: b5i26ZOACNbUPJYZfYDLQgcifRu9Noh4nKDPMPuaN35wot9Nn5fibGDJnck6Oju3FTYM7D985R5G272RmiGMvg==
+x-amz-request-id: PXEE6AMKV47B35TC
+Date: Sat, 29 Jul 2023 14:35:35 GMT
+x-amz-server-side-encryption: AES256
+ETag: "098f6bcd4621d373cade4e832627b4f6"
+x-amz-checksum-sha256: n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg=
+Server: AmazonS3
+Content-Length: 0
+```

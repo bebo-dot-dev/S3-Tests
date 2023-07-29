@@ -42,10 +42,18 @@ namespace S3.Tests
             //valid AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY env vars must be set
             using var client = new AmazonS3Client(
                 new EnvironmentVariablesAWSCredentials(),
-                RegionEndpoint);
+                new AmazonS3Config
+                {
+                    RegionEndpoint = RegionEndpoint,
+                    UseHttp = true,
+                    ProxyHost = "127.0.0.1",
+                    ProxyPort = 8866
+                });
             
             var act = await client.PutObjectAsync(request);
             await TestContext.Out.WriteLineAsync("SHA-256 hash: " + act.ChecksumSHA256);
+            
+            //assert
             act.ChecksumSHA256.Should().Be("n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg=");
         }
 
