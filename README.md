@@ -142,3 +142,47 @@ x-amz-checksum-sha256: n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg=
 Server: AmazonS3
 Content-Length: 0
 ```
+
+### Raw MinIO Http Request/Response (http routed through a local proxy)
+Request:
+```
+PUT http://127.0.0.1:49180/test-bucket-unique-unique/S3.Tests.resources.test-file.txt HTTP/1.1
+Expect: 100-continue
+x-amz-sdk-checksum-algorithm: SHA256
+User-Agent: aws-sdk-dotnet-coreclr/3.7.108.0 aws-sdk-dotnet-core/3.7.108.2 .NET_Core/6.0.20 OS/Linux_5.15.0-78-generic_#85-Ubuntu_SMP_Fri_Jul_7_15:25:09_UTC_2023 ClientAsync
+amz-sdk-invocation-id: 5330f3f0-819c-4e5e-80d9-48390816467a
+amz-sdk-request: attempt=1; max=5
+Host: 127.0.0.1:49180
+X-Amz-Date: 20230731T181522Z
+X-Amz-Trailer: x-amz-checksum-sha256
+X-Amz-Decoded-Content-Length: 4
+X-Amz-Content-SHA256: STREAMING-AWS4-HMAC-SHA256-PAYLOAD-TRAILER
+Authorization: AWS4-HMAC-SHA256 Credential=minio_test/20230731/us-east-1/s3/aws4_request, SignedHeaders=content-length;content-type;host;user-agent;x-amz-content-sha256;x-amz-date;x-amz-decoded-content-length;x-amz-sdk-checksum-algorithm;x-amz-trailer, Signature=1ec8e73bc1901d462da2b8160bc7d12bebb264820563e964bdf9c0fe5baac1df
+Content-Length: 334
+Content-Type: text/plain
+
+4;chunk-signature=f4f3924c04c4894a340fe53fc8533c661afea801cb271796da93f2cf86257652
+test
+0;chunk-signature=ba9cfdde0f8e6bd6abd5570eca0612747c561a03f2402846bcd062719011773d
+x-amz-checksum-sha256:n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg=
+x-amz-trailer-signature:6731d8f1dbcb835ac873f1115f494ccdf1e7cacf756cd480b8d16bd8cc782874
+```
+Response:
+```
+HTTP/1.1 403 Forbidden
+Accept-Ranges: bytes
+Content-Length: 513
+Content-Type: application/xml
+Server: MinIO
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Vary: Origin
+Vary: Accept-Encoding
+X-Amz-Id-2: dd9025bab4ad464b049177c95eb6ebf374d3b3fd1af9251148b658df7ac2e3e8
+X-Amz-Request-Id: 1777067E06A63BC7
+X-Content-Type-Options: nosniff
+X-Xss-Protection: 1; mode=block
+Date: Mon, 31 Jul 2023 18:15:23 GMT
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>SignatureDoesNotMatch</Code><Message>The request signature we calculated does not match the signature you provided. Check your key and signing method.</Message><Key>S3.Tests.resources.test-file.txt</Key><BucketName>test-bucket-unique-unique</BucketName><Resource>/test-bucket-unique-unique/S3.Tests.resources.test-file.txt</Resource><RequestId>1777067E06A63BC7</RequestId><HostId>dd9025bab4ad464b049177c95eb6ebf374d3b3fd1af9251148b658df7ac2e3e8</HostId></Error>
+```
