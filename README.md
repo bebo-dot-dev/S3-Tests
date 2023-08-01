@@ -1,7 +1,7 @@
 ## S3.Tests
 .NET6 AWS S3 client integration tests
 
-### Prerequisites
+### S3 Test Prerequisites
 * An active AWS account (free tier is enough)
 * A valid access key/secret configured for an IAM user
 * A created S3 bucket
@@ -9,11 +9,12 @@
 
 ### Nuget packages used
 ```
-<PackageReference Include="AWSSDK.S3" Version="3.7.108" />
+PackageReference Include="AWSSDK.S3" Version="3.7.108" />
 <PackageReference Include="FluentAssertions" Version="6.11.0" />
 <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.3" />
 <PackageReference Include="NUnit" Version="3.13.3" />
 <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+<PackageReference Include="Testcontainers.Minio" Version="3.3.0" />
 ```
 
 ### Build requirements
@@ -21,7 +22,6 @@
 * Optional: an IDE i.e. Visual Studio Code / Rider / Visual Studio
 
 ### Running the tests
-
 ```
 $ dotnet test ./S3.Tests/S3.Tests.csproj
   Determining projects to restore...
@@ -57,7 +57,7 @@ Passed!  - Failed:     0, Passed:     1, Skipped:     0, Total:     1, Duration:
 The `resources/test-file.txt` embedded resources file is uploaded to S3
 
 ### Output logging
-The S3 side calculated SHA-256 hash is output to the console
+The response side calculated SHA-256 hash is output to the console
 
 `SHA-256 hash: n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg=`
 

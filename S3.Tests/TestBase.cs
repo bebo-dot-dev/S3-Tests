@@ -12,8 +12,8 @@ public abstract class TestBase
     protected string FileResourceName = null!;
     protected Stream FileResourceStream = null!;
         
-    [OneTimeSetUp]
-    public void OneTimeSetUp()
+    [SetUp]
+    public void SetUp()
     {
         FileResourceName = Assembly.GetExecutingAssembly().GetManifestResourceNames().First();
         FileResourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(FileResourceName)!;

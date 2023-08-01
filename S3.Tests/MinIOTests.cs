@@ -57,7 +57,7 @@ namespace S3.Tests
             };
 
             //act
-            Func<Task> act = async () => await client.PutObjectAsync(request);
+            var act = async () => await client.PutObjectAsync(request);
             
             //assert
             await act.Should()
@@ -99,7 +99,7 @@ namespace S3.Tests
             };
 
             //act
-            Func<Task> act = async () => await client.PutObjectAsync(request);
+            var act = async () => await client.PutObjectAsync(request);
             
             //assert
             await act.Should()
