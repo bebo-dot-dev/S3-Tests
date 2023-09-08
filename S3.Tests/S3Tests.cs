@@ -37,7 +37,7 @@ namespace S3.Tests
                     RegionEndpoint = RegionEndpoint,
                     UseHttp = true,
                     ProxyHost = "127.0.0.1",
-                    ProxyPort = 8866
+                    ProxyPort = 8080
                 });
             
             var act = await client.PutObjectAsync(request);
@@ -46,7 +46,7 @@ namespace S3.Tests
             //assert
             act.ChecksumSHA256.Should().Be("n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg=");
         }
-
+        
         private static void ConfigureLogging()
         {
             AWSConfigs.LoggingConfig.LogTo = LoggingOptions.Console;

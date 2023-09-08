@@ -13,7 +13,7 @@ public abstract class TestBase
     protected Stream FileResourceStream = null!;
         
     [SetUp]
-    public void SetUp()
+    public void BaseSetUp()
     {
         FileResourceName = Assembly.GetExecutingAssembly().GetManifestResourceNames().First();
         FileResourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(FileResourceName)!;

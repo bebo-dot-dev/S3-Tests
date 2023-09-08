@@ -43,7 +43,7 @@ namespace S3.Tests
                     ServiceURL = latestMinio.GetConnectionString(), //target the request at the test container MinIO instance
                     ForcePathStyle = true, //using path style addressing for MinIO
                     ProxyHost = "127.0.0.1", //route through local proxy to capture the request/response
-                    ProxyPort = 8866
+                    ProxyPort = 8080
                 });
             await client.PutBucketAsync(BucketName);
             
@@ -85,7 +85,7 @@ namespace S3.Tests
                     ServiceURL = olderMinio.GetConnectionString(), //target the request at the test container MinIO instance
                     ForcePathStyle = true, //using path style addressing for MinIO
                     ProxyHost = "127.0.0.1", //route through local proxy to capture the request/response
-                    ProxyPort = 8866
+                    ProxyPort = 8080
                 });
             await client.PutBucketAsync(BucketName);
             
