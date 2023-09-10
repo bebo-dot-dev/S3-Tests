@@ -30,6 +30,7 @@ public class IntegrationTests
             b.UseSetting("MINIO_ROOT_USER", MinioUsername);
             b.UseSetting("MINIO_ROOT_PASSWORD", MinioPassword);
             b.UseSetting("MINIO_URL", _minioContainer.GetConnectionString());
+
         });
         
     }

@@ -13,10 +13,13 @@ public class S3Gateway
     private readonly IConfiguration _configuration;
     private readonly string _fileResourceName;
     private readonly Stream _fileResourceStream;
+    private readonly S3HttpClientFactory _httpClientFactory;
 
-    public S3Gateway(IConfiguration configuration)
+    public S3Gateway(IConfiguration configuration, S3HttpClientFactory httpClientFactory)
     {
         _configuration = configuration;
+        _httpClientFactory = httpClientFactory;
+        
         _fileResourceName = Assembly.GetExecutingAssembly().GetManifestResourceNames().First();
         _fileResourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(_fileResourceName)!;
     }
@@ -38,7 +41,8 @@ public class S3Gateway
             {
                 UseHttp = true, //plain old http
                 ServiceURL = _configuration["MINIO_URL"], //target the request at the test container MinIO instance
-                ForcePathStyle = true //using path style addressing for MinIO
+                ForcePathStyle = true, //using path style addressing for MinIO
+                HttpClientFactory = _httpClientFactory
             });
     }
 
