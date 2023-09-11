@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Security.Cryptography;
 using Amazon;
 using NUnit.Framework;
 
@@ -17,5 +18,26 @@ public abstract class TestBase
     {
         FileResourceName = Assembly.GetExecutingAssembly().GetManifestResourceNames().First();
         FileResourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(FileResourceName)!;
+    }
+
+    protected async Task<byte[]> GetFileResourceSha256HashBytes(CancellationToken cancellationToken)
+    {
+        FileResourceStream.Position = 0;
+        
+        var hasher = SHA256.Create();
+        var hashBytes = await hasher.ComputeHashAsync(FileResourceStream, cancellationToken);
+        return hashBytes;
+    }
+
+    protected async Task<string> GetFileResourceBase64Sha256Hash(CancellationToken cancellationToken)
+    {
+        var base64Hash = Convert.ToBase64String(await GetFileResourceSha256HashBytes(cancellationToken));
+        return base64Hash;
+    }
+    
+    protected async Task<string> GetFileResourceHexSha256Hash(CancellationToken cancellationToken)
+    {
+        var base64Hash = Convert.ToHexString(await GetFileResourceSha256HashBytes(cancellationToken));
+        return base64Hash.ToLowerInvariant();
     }
 }
