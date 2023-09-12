@@ -42,7 +42,8 @@ public class S3Gateway
                 UseHttp = true, //plain old http
                 ServiceURL = _configuration["MINIO_URL"], //target the request at the test container MinIO instance
                 ForcePathStyle = true, //using path style addressing for MinIO
-                HttpClientFactory = _httpClientFactory
+                HttpClientFactory = _httpClientFactory,
+                MaxErrorRetry = 0 //disable AWS SDK retries if using Polly
             });
     }
 
